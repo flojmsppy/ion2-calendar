@@ -63,6 +63,7 @@ export const ION_CAL_VALUE_ACCESSOR: any = {
       <ion-calendar-month [(ngModel)]="_calendarMonthValue"
                           [month]="monthOpt"
                           [readonly]="readonly"
+                          [selectAll]="selectAll" 
                           (onChange)="onChanged($event)"
                           (swipe)="swipeEvent($event)"
                           [pickMode]="_d.pickMode"
@@ -92,6 +93,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: 'string' | 'js-date' | 'moment' | 'time' | 'object' = 'string';
   @Input() readonly = false;
+  @Input() selectAll = true;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() monthChange: EventEmitter<any> = new EventEmitter();
   @Input()

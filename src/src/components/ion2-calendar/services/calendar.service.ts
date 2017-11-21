@@ -45,6 +45,7 @@ export class CalendarService {
       weekdays = defaults.WEEKS_FORMAT,
       daysConfig = _daysConfig,
       disableWeeks = _disableWeeks,
+      selectAll = true,
     } = calendarOptions || {};
 
     return {
@@ -69,6 +70,7 @@ export class CalendarService {
       daysConfig,
       step,
       showYearPicker,
+      selectAll,
       defaultTitle,
       defaultSubtitle,
       defaultScrollTo: calendarOptions.defaultScrollTo || from,

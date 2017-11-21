@@ -68,6 +68,8 @@ export interface CalendarModalOptions extends CalendarOptions {
         to?: DefaultDate;
     } | null;
     step?: number;
+    selectApp?: boolean;
+    selectAll?: boolean;
     /**
      * @deprecated this version notwork
      */

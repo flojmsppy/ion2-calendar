@@ -15,6 +15,7 @@ export declare class CalendarComponent implements ControlValueAccessor, OnInit {
     format: string;
     type: 'string' | 'js-date' | 'moment' | 'time' | 'object';
     readonly: boolean;
+    selectAll: boolean;
     onChange: EventEmitter<any>;
     monthChange: EventEmitter<any>;
     options: CalendarComponentOptions;

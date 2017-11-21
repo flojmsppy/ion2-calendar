@@ -47,6 +47,7 @@ import { pickModes } from "../config";
             <h4 class="text-center month-title">{{_monthFormat(month.original.date)}}</h4>
             <ion-calendar-month [month]="month"
                                 [pickMode]="_d.pickMode"
+                                [selectAll]="_d.selectAll" 
                                 [isSaveHistory]="_d.isSaveHistory"
                                 [id]="_d.id"
                                 [color]="_d.color"
@@ -78,6 +79,7 @@ export class CalendarModal {
   year: number;
   years: Array<number>;
   infiniteScroll: InfiniteScroll;
+  selectAll: boolean;
   _s: boolean = true;
   _d: CalendarModalOptions;
 
@@ -98,8 +100,7 @@ export class CalendarModal {
 
   init() {
     this._d = this.calSvc.safeOpt(this.params.get('options'));
-
-    this.step = this._d.step;
+      this.step = this._d.step;
     if (this.step < 1) {
       this.step = 1;
     }

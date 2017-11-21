@@ -18,6 +18,7 @@ export declare class CalendarModal {
     year: number;
     years: Array<number>;
     infiniteScroll: InfiniteScroll;
+    selectAll: boolean;
     _s: boolean;
     _d: CalendarModalOptions;
     constructor(_renderer: Renderer, _elementRef: ElementRef, params: NavParams, viewCtrl: ViewController, ref: ChangeDetectorRef, calSvc: CalendarService);

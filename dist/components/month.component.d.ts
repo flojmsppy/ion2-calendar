@@ -9,6 +9,7 @@ export declare class MonthComponent implements ControlValueAccessor, AfterViewIn
     isSaveHistory: boolean;
     id: any;
     readonly: boolean;
+    selectAll: boolean;
     color: string;
     onChange: EventEmitter<any>;
     _date: Array<CalendarDay | null>;
@@ -26,5 +27,5 @@ export declare class MonthComponent implements ControlValueAccessor, AfterViewIn
     isBetween(day: CalendarDay): boolean;
     isStartSelection(day: CalendarDay): boolean;
     isSelected(time: number): boolean;
-    onSelected(item: any): void;
+    onSelected(item: any, days: any[]): void;
 }

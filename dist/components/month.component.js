@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { defaults, pickModes } from "../config";
+import { defaults, pickModes } from '../config';
 export var MONTH_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(function () { return MonthComponent; }),
@@ -10,6 +10,7 @@ var MonthComponent = /** @class */ (function () {
     function MonthComponent(ref) {
         this.ref = ref;
         this.readonly = false;
+        this.selectAll = true;
         this.color = defaults.COLOR;
         this.onChange = new EventEmitter();
         this._date = [null, null];
@@ -86,7 +87,7 @@ var MonthComponent = /** @class */ (function () {
             return false;
         }
     };
-    MonthComponent.prototype.onSelected = function (item) {
+    MonthComponent.prototype.onSelected = function (item, days) {
         if (this.readonly)
             return;
         item.selected = true;
@@ -106,6 +107,20 @@ var MonthComponent = /** @class */ (function () {
                 else {
                     this._date[1] = this._date[0];
                     this._date[0] = item;
+                }
+                if (!this.selectAll) {
+                    for (var _i = 0, days_1 = days; _i < days_1.length; _i++) {
+                        var day = days_1[_i];
+                        if (day !== null) {
+                            if (this.isBetween(day)) {
+                                if (day.disable) {
+                                    this._date[0] = item;
+                                    this._date[1] = null;
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else {
@@ -130,7 +145,7 @@ var MonthComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'ion-calendar-month',
                     providers: [MONTH_VALUE_ACCESSOR],
-                    template: "\n    <div [class]=\"color\">\n      <ng-template [ngIf]=\"!_isRange\" [ngIfElse]=\"rangeBox\">\n        <div class=\"days-box\">\n          <ng-template ngFor let-day [ngForOf]=\"month.days\" [ngForTrackBy]=\"trackByTime\">\n            <div class=\"days\">\n              <ng-container *ngIf=\"day\">\n                <button type='button'\n                        [class]=\"'days-btn ' + day.cssClass\"\n                        [class.today]=\"day.isToday\"\n                        (click)=\"onSelected(day)\"\n                        [class.marked]=\"day.marked\"\n                        [class.on-selected]=\"isSelected(day.time)\"\n                        [disabled]=\"day.disable\">\n                  <p>{{day.title}}</p>\n                  <small *ngIf=\"day.subTitle\">{{day?.subTitle}}</small>\n                </button>\n              </ng-container>\n            </div>\n          </ng-template>\n        </div>\n      </ng-template>\n\n      <ng-template #rangeBox>\n        <div class=\"days-box\">\n          <ng-template ngFor let-day [ngForOf]=\"month.days\" [ngForTrackBy]=\"trackByTime\">\n            <div class=\"days\"\n                 [class.startSelection]=\"isStartSelection(day)\"\n                 [class.endSelection]=\"isEndSelection(day)\"\n                 [class.between]=\"isBetween(day)\">\n              <ng-container *ngIf=\"day\">\n                <button type='button'\n                        [class]=\"'days-btn ' + day.cssClass\"\n                        [class.today]=\"day.isToday\"\n                        (click)=\"onSelected(day)\"\n                        [class.marked]=\"day.marked\"\n                        [class.on-selected]=\"isSelected(day.time)\"\n                        [disabled]=\"day.disable\">\n                  <p>{{day.title}}</p>\n                  <small *ngIf=\"day.subTitle\">{{day?.subTitle}}</small>\n                </button>\n              </ng-container>\n\n            </div>\n          </ng-template>\n        </div>\n      </ng-template>\n    </div>\n  ",
+                    template: "\n        <div [class]=\"color\">\n            <ng-template [ngIf]=\"!_isRange\" [ngIfElse]=\"rangeBox\">\n                <div class=\"days-box\">\n                    <ng-template ngFor let-day [ngForOf]=\"month.days\" [ngForTrackBy]=\"trackByTime\">\n                        <div class=\"days\">\n                            <ng-container *ngIf=\"day\">\n                                <button type='button'\n                                        [class]=\"'days-btn ' + day.cssClass\"\n                                        [class.today]=\"day.isToday\"\n                                        (click)=\"onSelected(day)\"\n                                        [class.marked]=\"day.marked\"\n                                        [class.on-selected]=\"isSelected(day.time)\"\n                                        [disabled]=\"day.disable\">\n                                    <p>{{day.title}}</p>\n                                    <small *ngIf=\"day.subTitle\">{{day?.subTitle}}</small>\n                                </button>\n                            </ng-container>\n                        </div>\n                    </ng-template>\n                </div>\n            </ng-template>\n\n            <ng-template #rangeBox>\n                <div class=\"days-box\">\n                    <ng-template ngFor let-day [ngForOf]=\"month.days\" [ngForTrackBy]=\"trackByTime\">\n                        <div class=\"days\"\n                             [class.startSelection]=\"isStartSelection(day)\"\n                             [class.endSelection]=\"isEndSelection(day)\"\n                             [class.between]=\"isBetween(day)\">\n                            <ng-container *ngIf=\"day\">\n                                <button type='button'\n                                        [class]=\"'days-btn ' + day.cssClass\"\n                                        [class.today]=\"day.isToday\"\n                                        (click)=\"onSelected(day,month.days)\"\n                                        [class.marked]=\"day.marked\"\n                                        [class.on-selected]=\"isSelected(day.time)\"\n                                        [disabled]=\"day.disable\">\n                                    <p>{{day.title}}</p>\n                                    <small *ngIf=\"day.subTitle\">{{day?.subTitle}}</small>\n                                </button>\n                            </ng-container>\n\n                        </div>\n                    </ng-template>\n                </div>\n            </ng-template>\n        </div>\n    ",
                 },] },
     ];
     /** @nocollapse */
@@ -143,6 +158,7 @@ var MonthComponent = /** @class */ (function () {
         'isSaveHistory': [{ type: Input },],
         'id': [{ type: Input },],
         'readonly': [{ type: Input },],
+        'selectAll': [{ type: Input },],
         'color': [{ type: Input },],
         'onChange': [{ type: Output },],
     };

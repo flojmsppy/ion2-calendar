@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, AfterViewInit, } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CalendarDay, CalendarMonth, PickMode } from '../calendar.model'
-import { defaults, pickModes } from "../config";
+import { CalendarDay, CalendarMonth, PickMode } from '../calendar.model';
+import { defaults, pickModes } from '../config';
 
 export const MONTH_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -46,7 +46,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                 <button type='button'
                         [class]="'days-btn ' + day.cssClass"
                         [class.today]="day.isToday"
-                        (click)="onSelected(day)"
+                        (click)="onSelected(day,month.days)"
                         [class.marked]="day.marked"
                         [class.on-selected]="isSelected(day.time)"
                         [disabled]="day.disable">
@@ -69,6 +69,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   @Input() isSaveHistory: boolean;
   @Input() id: any;
   @Input() readonly = false;
+  @Input() selectAll = true;
   @Input() color: string = defaults.COLOR;
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -79,7 +80,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   _onTouched: Function;
 
   get _isRange() {
-    return this.pickMode === pickModes.RANGE
+    return this.pickMode === pickModes.RANGE;
   }
 
   constructor(public ref: ChangeDetectorRef,) {
@@ -148,22 +149,22 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
 
       if (this.pickMode !== pickModes.MULTI) {
         if (this._date[0] !== null) {
-          return time === this._date[0].time
+          return time === this._date[0].time;
         }
 
         if (this._date[1] !== null) {
-          return time === this._date[1].time
+          return time === this._date[1].time;
         }
       } else {
         return this._date.findIndex(e => e !== null && e.time === time) !== -1;
       }
 
     } else {
-      return false
+      return false;
     }
   }
 
-  onSelected(item: any) {
+  onSelected(item: any, days: any[]) {
     if (this.readonly) return;
     item.selected = true;
 
@@ -183,10 +184,24 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
           this._date[1] = this._date[0];
           this._date[0] = item;
         }
+        if (!this.selectAll) {
+          for (let day of days) {
+            if (day !== null) {
+              if (this.isBetween(day)) {
+                if (day.disable) {
+                  this._date[0] = item;
+                  this._date[1] = null;
+                  return;
+                }
+              }
+            }
+          }
+        }
       } else {
         this._date[0] = item;
         this._date[1] = null;
       }
+
       this.onChange.emit(this._date);
       return;
     }
