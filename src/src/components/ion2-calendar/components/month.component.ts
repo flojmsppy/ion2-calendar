@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, AfterViewInit, } from '@angular/core';
+import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, AfterViewInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CalendarDay, CalendarMonth, PickMode } from '../calendar.model';
 import { defaults, pickModes } from '../config';
@@ -83,7 +83,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return this.pickMode === pickModes.RANGE;
   }
 
-  constructor(public ref: ChangeDetectorRef,) {
+  constructor(public ref: ChangeDetectorRef) {
   }
 
   ngAfterViewInit() {
@@ -183,6 +183,9 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
         } else {
           this._date[1] = this._date[0];
           this._date[0] = item;
+        }
+        if (this._date[0].time === this._date[1].time) {
+          this._date[0] = this._date[1] = null;
         }
         if (!this.selectAll) {
           for (let day of days) {

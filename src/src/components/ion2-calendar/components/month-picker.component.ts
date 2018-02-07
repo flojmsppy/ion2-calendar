@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarMonth } from "../calendar.model";
 import { defaults, pickModes } from "../config";
 
@@ -23,7 +23,7 @@ export class MonthPickerComponent {
   @Input() color = defaults.COLOR;
   @Output() onSelect: EventEmitter<number> = new EventEmitter();
   _thisMonth = new Date();
-  _monthFormat =  defaults.MONTH_FORMAT;
+  _monthFormat = defaults.MONTH_FORMAT;
 
   @Input()
   set monthFormat(value: string[]) {

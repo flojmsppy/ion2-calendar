@@ -6,7 +6,7 @@ import {
   CalendarMonth,
   CalendarModalOptions,
   CalendarResult,
-  DayConfig
+  DayConfig,
 } from '../calendar.model'
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
@@ -234,7 +234,7 @@ export class CalendarService {
       string: _moment.format(defaults.DATE_FORMAT),
       years: _moment.year(),
       months: _moment.month() + 1,
-      date: _moment.date()
+      date: _moment.date(),
     }
   }
 

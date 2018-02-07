@@ -4,7 +4,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  forwardRef
+  forwardRef,
 } from '@angular/core';
 
 import { CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay } from '../calendar.model'
@@ -17,7 +17,7 @@ import { defaults, pickModes } from "../config";
 export const ION_CAL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => CalendarComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -192,7 +192,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     const nextTime = moment(this.monthOpt.original.time).add(1, 'months').valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(nextTime)
+      newMonth: this.calSvc.multiFormat(nextTime),
     });
     this.monthOpt = this.createMonth(nextTime);
   }
@@ -206,7 +206,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     const backTime = moment(this.monthOpt.original.time).subtract(1, 'months').valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(backTime)
+      newMonth: this.calSvc.multiFormat(backTime),
     });
     this.monthOpt = this.createMonth(backTime);
   }
@@ -221,7 +221,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     const newMonth = moment(this.monthOpt.original.time).month(month).valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(newMonth)
+      newMonth: this.calSvc.multiFormat(newMonth),
     });
     this.monthOpt = this.createMonth(newMonth);
   }
@@ -238,7 +238,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         if ($event[0] && $event[1]) {
           const rangeDate = {
             from: this._handleType($event[0].time),
-            to: this._handleType($event[1].time)
+            to: this._handleType($event[1].time),
           };
           this._onChanged(rangeDate);
           this.onChange.emit(rangeDate);

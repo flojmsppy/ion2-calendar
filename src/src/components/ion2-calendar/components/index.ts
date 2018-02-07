@@ -9,5 +9,5 @@ export const CALENDAR_COMPONENTS = [
   CalendarWeekComponent,
   MonthComponent,
   CalendarComponent,
-  MonthPickerComponent
+  MonthPickerComponent,
 ];
