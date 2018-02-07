@@ -108,6 +108,9 @@ var MonthComponent = /** @class */ (function () {
                     this._date[1] = this._date[0];
                     this._date[0] = item;
                 }
+                if (this._date[0].time === this._date[1].time) {
+                this._date[0] = this._date[1] = null;
+                }
                 if (!this.selectAll) {
                     for (var _i = 0, days_1 = days; _i < days_1.length; _i++) {
                         var day = days_1[_i];
