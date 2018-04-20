@@ -19,6 +19,7 @@ var CalendarComponent = /** @class */ (function () {
         this.type = 'string';
         this.readonly = false;
         this.selectAll = true;
+        this.fixedDayRange = new EventEmitter();
         this.onChange = new EventEmitter();
         this.monthChange = new EventEmitter();
         this._onChanged = function () { };

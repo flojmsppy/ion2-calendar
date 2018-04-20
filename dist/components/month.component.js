@@ -14,6 +14,7 @@ var MonthComponent = /** @class */ (function () {
         this.readonly = false;
         this.selectAll = true;
         this.color = defaults.COLOR;
+        this.fixedDayRange = new EventEmitter();
         this.onChange = new EventEmitter();
         this._date = [null, null];
         this._isInit = false;
