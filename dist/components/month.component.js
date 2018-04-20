@@ -14,7 +14,7 @@ var MonthComponent = /** @class */ (function () {
         this.readonly = false;
         this.selectAll = true;
         this.color = defaults.COLOR;
-        this.fixedDayRange = new EventEmitter();
+        this.fixedDayRange = { time: null, totalDays: null, endDay: ''};
         this.onChange = new EventEmitter();
         this._date = [null, null];
         this._isInit = false;
@@ -199,6 +199,7 @@ var MonthComponent = /** @class */ (function () {
         'isSaveHistory': [{ type: Input },],
         'id': [{ type: Input },],
         'readonly': [{ type: Input },],
+        'fixedDayRange': [ {type: Input},],
         'selectAll': [{ type: Input },],
         'color': [{ type: Input },],
         'onChange': [{ type: Output },],
