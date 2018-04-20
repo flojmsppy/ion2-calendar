@@ -27,7 +27,7 @@ var MonthComponent = /** @class */ (function () {
         configurable: true
     });
     MonthComponent.prototype.ngAfterViewInit = function () {
-        this._isInit = true;
+        setTimeout(() => {this._isInit = true;});
     };
     MonthComponent.prototype.writeValue = function (obj) {
         if (Array.isArray(obj)) {
@@ -70,7 +70,18 @@ var MonthComponent = /** @class */ (function () {
         if (this.pickMode !== pickModes.RANGE && this.pickMode !== pickModes.FIXED_RANGE || !this._isInit || this._date[0] === null) {
             return false;
         }
-        return this._date[0].time === day.time && this._date[1] !== null;
+        if (day && this._date[0] !== null && this._date[1] !== null) {
+            if (day.disable && this._date[0].time === day.time) {
+                if (Array.isArray(this._date)) {
+                    this._date[0] = null;
+                    this._date[1] = null;
+                    return false;
+                }
+            }
+        }
+        if (this._date[0].time) {
+            return this._date[0].time === day.time && this._date[1] !== null;
+        }
     };
     MonthComponent.prototype.isSelected = function (time) {
         if (Array.isArray(this._date)) {
