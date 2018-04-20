@@ -73,13 +73,33 @@
       <ion-card-title>
         range
       </ion-card-title>
-      <ion-calendar [(ngModel)]="dateRangeObj"
+      <ion-calendar
+                    (onChange)="onchange($event)"
+                    [(ngModel)]="dateRangeObj"
                     [options]="optionsRange"
                     [readonly]="false"
                     [selectAll]="false"
                     [format]="format">
       </ion-calendar>
       <p>{{dateRangeObj | json}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        fixed range
+      </ion-card-title>
+      <ion-calendar
+              [fixedDayRange]="finalDayObj"
+              (onChange)="onchange($event)"
+              [(ngModel)]="dateFixedRangeObj"
+              [options]="optionsFixedRange"
+              [readonly]="false"
+              [selectAll]="false"
+              [format]="format">
+      </ion-calendar>
+      <p>{{dateFixedRangeObj | json}}</p>
     </ion-card-content>
   </ion-card>
 

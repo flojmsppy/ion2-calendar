@@ -10,6 +10,7 @@ export declare class MonthComponent implements ControlValueAccessor, AfterViewIn
     id: any;
     readonly: boolean;
     selectAll: boolean;
+    fixedDayRange: { time: number, day: string, totalDays: number };
     color: string;
     onChange: EventEmitter<any>;
     _date: Array<CalendarDay | null>;

@@ -6,6 +6,8 @@ export var MONTH_VALUE_ACCESSOR = {
     useExisting: forwardRef(function () { return MonthComponent; }),
     multi: true,
 };
+import * as moment from 'moment';
+
 var MonthComponent = /** @class */ (function () {
     function MonthComponent(ref) {
         this.ref = ref;
@@ -18,7 +20,7 @@ var MonthComponent = /** @class */ (function () {
     }
     Object.defineProperty(MonthComponent.prototype, "_isRange", {
         get: function () {
-            return this.pickMode === pickModes.RANGE;
+            return this.pickMode === pickModes.RANGE || this.pickMode === pickModes.FIXED_RANGE;
         },
         enumerable: true,
         configurable: true
@@ -43,7 +45,7 @@ var MonthComponent = /** @class */ (function () {
     MonthComponent.prototype.isEndSelection = function (day) {
         if (!day)
             return false;
-        if (this.pickMode !== pickModes.RANGE || !this._isInit || this._date[1] === null) {
+        if (this.pickMode !== pickModes.RANGE && this.pickMode !== pickModes.FIXED_RANGE || !this._isInit || this._date[1] === null) {
             return false;
         }
         return this._date[1].time === day.time;
@@ -51,7 +53,7 @@ var MonthComponent = /** @class */ (function () {
     MonthComponent.prototype.isBetween = function (day) {
         if (!day)
             return false;
-        if (this.pickMode !== pickModes.RANGE || !this._isInit) {
+        if (this.pickMode !== pickModes.RANGE && this.pickMode !== pickModes.FIXED_RANGE || !this._isInit) {
             return false;
         }
         if (this._date[0] === null || this._date[1] === null) {
@@ -64,7 +66,7 @@ var MonthComponent = /** @class */ (function () {
     MonthComponent.prototype.isStartSelection = function (day) {
         if (!day)
             return false;
-        if (this.pickMode !== pickModes.RANGE || !this._isInit || this._date[0] === null) {
+        if (this.pickMode !== pickModes.RANGE && this.pickMode !== pickModes.FIXED_RANGE || !this._isInit || this._date[0] === null) {
             return false;
         }
         return this._date[0].time === day.time && this._date[1] !== null;
@@ -96,6 +98,41 @@ var MonthComponent = /** @class */ (function () {
             this.onChange.emit(this._date);
             return;
         }
+
+        if (this.pickMode === pickModes.FIXED_RANGE) {
+            var totalTmpDays = this.fixedDayRange.totalDays;
+            var start = moment(item.time).date();
+            var end = start + totalTmpDays;
+            var j = moment(item.time);
+            var total = j.add(totalTmpDays, 'days').toDate().getTime();
+            let finalDayObj = {
+                totalDays: totalTmpDays,
+                time: total,
+                endDay: end.toString()
+            };
+            var dummy = {
+                cssClass: "",
+                disable: false,
+                isToday: false,
+                marked: false,
+                selected: item.selected,
+                subTitle: "",
+                time: finalDayObj.time,
+                title: finalDayObj.endDay
+            };
+            if (this._date[0] !== item) {
+                this._date[0] = item;
+                this._date[1] = dummy;
+                this.onChange.emit(this._date);
+                return;
+            }
+            if (this._date[0] === item) {
+                this._date[0] = this._date[1] = null;
+                this.onChange.emit(this._date);
+                return;
+            }
+        }
+
         if (this.pickMode === pickModes.RANGE) {
             if (this._date[0] === null) {
                 this._date[0] = item;

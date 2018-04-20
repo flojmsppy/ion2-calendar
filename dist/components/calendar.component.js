@@ -143,6 +143,23 @@ var CalendarComponent = /** @class */ (function () {
                 this._onChanged(date);
                 this.onChange.emit(date);
                 break;
+            case pickModes.FIXED_RANGE:
+                if ($event[0]) {
+                    const rangeDate = {
+                        from: this._handleType($event[0].time),
+                        to: this._handleType($event[1].time),
+                    }
+                    this._onChanged(rangeDate);
+                    this.onChange.emit(rangeDate);
+                } else {
+                    const rangeDate = {
+                        from: '',
+                        to: '',
+                    }
+                    this._onChanged(rangeDate);
+                    this.onChange.emit(rangeDate);
+                }
+                break;
             case pickModes.RANGE:
                 if ($event[0] && $event[1]) {
                     var rangeDate = {
@@ -185,7 +202,7 @@ var CalendarComponent = /** @class */ (function () {
             case 'single':
                 this._calendarMonthValue[0] = this._createCalendarDay(value);
                 break;
-            case 'range':
+            case 'range' || 'fixed':
                 if (value.from) {
                     this._calendarMonthValue[0] = this._createCalendarDay(value.from);
                 }

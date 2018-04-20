@@ -8,5 +8,6 @@ export var pickModes = {
     SINGLE: 'single',
     RANGE: 'range',
     MULTI: 'multi',
+    FIXED_RANGE: 'fixed'
 };
 //# sourceMappingURL=config.js.map

@@ -1,25 +1,27 @@
-import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
+import {AfterViewInit, Component, NgZone} from '@angular/core';
+import {ModalController, NavController} from 'ionic-angular';
 
-import { CalendarController } from '../../components/ion2-calendar';
+import {CalendarController} from '../../components/ion2-calendar';
 import {
     CalendarComponentOptions, CalendarModalOptions,
     DayConfig
 } from '../../components/ion2-calendar/calendar.model';
 import * as moment from 'moment';
-import { CalendarModal } from '../../components/ion2-calendar';
+import {CalendarModal} from '../../components/ion2-calendar';
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements AfterViewInit{
+
 
     days: Array<any> = [];
     date: any = moment(moment().format('YYYY-MM-DD')).add(1, 'month');
     dateMulti = [];
     // dateRangeObj = {from: moment().format('YYYY-MM-DD'), to: moment().add(4, 'd').format('YYYY-MM-DD')};
     dateRangeObj = {from: '', to: ''};
+    dateFixedRangeObj = {from: '', to: ''};
     format = 'YYYY-MM-DD';
     optionsBasic: CalendarComponentOptions = {};
     optionsMulti: CalendarComponentOptions = {
@@ -27,7 +29,11 @@ export class HomePage {
         defaultSubtitle: 'hello',
         monthPickerFormat: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
     };
-    _daysConfig: DayConfig[] = [{date: new Date(2017, 10, 22), disable: true, subTitle: 'disabled'},{date: new Date(2017, 10, 24), disable: true, subTitle: 'disabled'},];
+    _daysConfig: DayConfig[] = [{
+        date: new Date(2017, 10, 22),
+        disable: true,
+        subTitle: 'disabled'
+    }, {date: new Date(2017, 10, 24), disable: true, subTitle: 'disabled'},];
     optionsRange: CalendarComponentOptions = {
         from: new Date(2000, 0),
         to: new Date(2020, 11, 31),
@@ -37,12 +43,45 @@ export class HomePage {
         daysConfig: this._daysConfig
     };
 
-    constructor(
-        public navCtrl: NavController,
-        public modalCtrl: ModalController,
-        public calendarCtrl: CalendarController,
-    ) {
+    optionsFixedRange: CalendarComponentOptions = {
+        from: new Date(2000, 0),
+        to: new Date(2020, 11, 31),
+        pickMode: 'fixed',
+        weekStart: 1,
+        weekdays: ['0', '1', '2', '3', '4', '5', '6'],
+        daysConfig: this._daysConfig
+    };
 
+    totalDays: string = '3';
+    public finalDayObj: {
+        time: number,
+        totalDays: number,
+        endDay: string
+    };
+
+    constructor(public navCtrl: NavController,
+                public modalCtrl: ModalController,
+                public calendarCtrl: CalendarController,
+                private zone: NgZone) {
+        this.totalDays = '3';
+    }
+
+    ngAfterViewInit(): void {
+        this.onchange(this);
+    }
+
+    onchange(ev) {
+        this.zone.run(() => {
+            const start = moment(ev.from).date();
+            const end = start + parseInt(this.totalDays);
+            const j = moment(ev.from);
+            const total = j.add(this.totalDays, 'days').toDate().getTime();
+            this.finalDayObj = {
+                totalDays: parseInt(this.totalDays),
+                time: total,
+                endDay: end.toString()
+            };
+        })
     }
 
     basic() {
@@ -67,7 +106,6 @@ export class HomePage {
     }
 
     dateChange($event) {
-
         this.optionsBasic = {
             pickMode: 'multi',
             defaultSubtitle: 'hello',
@@ -109,13 +147,17 @@ export class HomePage {
     }
 
     dateRange() {
-        let _daysConfig: DayConfig[] = [{date: new Date(2017, 10, 22), disable: true, subTitle: 'disabled'},{date: new Date(2017, 10, 24), disable: true, subTitle: 'disabled'},];
+        let _daysConfig: DayConfig[] = [{
+            date: new Date(2017, 10, 22),
+            disable: true,
+            subTitle: 'disabled'
+        }, {date: new Date(2017, 10, 24), disable: true, subTitle: 'disabled'},];
         const options: CalendarModalOptions = {
-            pickMode: 'range',
+            pickMode: 'fixed_range',
             title: 'RANGE',
             canBackwardsSelected: true,
             color: 'danger',
-            daysConfig : _daysConfig
+            daysConfig: _daysConfig
         };
 
         let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -152,7 +194,7 @@ export class HomePage {
         const options: CalendarModalOptions = {
             cssClass: 'my-class',
             color: 'secondary',
-            pickMode: 'range',
+            pickMode: 'fixed_range',
             autoDone: true
         };
 

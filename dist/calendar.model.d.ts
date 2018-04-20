@@ -104,4 +104,4 @@ export declare class CalendarResult {
 }
 export declare type DefaultDate = Date | string | number | null;
 export declare type Colors = 'primary' | 'secondary' | 'danger' | 'light' | 'dark' | string;
-export declare type PickMode = 'multi' | 'single' | 'range';
+export declare type PickMode = 'multi' | 'single' | 'range' | 'fixed';

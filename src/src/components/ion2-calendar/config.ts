@@ -9,4 +9,5 @@ export const pickModes = {
   SINGLE: 'single',
   RANGE: 'range',
   MULTI: 'multi',
+  FIXED_RANGE : 'fixed',
 };

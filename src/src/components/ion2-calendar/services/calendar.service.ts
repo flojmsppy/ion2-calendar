@@ -210,7 +210,7 @@ export class CalendarService {
       case pickModes.SINGLE:
         result = this.multiFormat(original[0].time);
         break;
-      case pickModes.RANGE:
+      case pickModes.RANGE || pickModes.FIXED_RANGE:
         result = {
           from: this.multiFormat(original[0].time),
           to: this.multiFormat(original[1].time),

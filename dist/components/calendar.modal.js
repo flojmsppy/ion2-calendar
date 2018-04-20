@@ -37,7 +37,7 @@ var CalendarModal = /** @class */ (function () {
                     this.datesTemp[0] = this.calSvc.createCalendarDay(this._getDayTime(defaultDate), this._d);
                 }
                 break;
-            case pickModes.RANGE:
+            case pickModes.RANGE || pickModes.FIXED_RANGE:
                 if (defaultDateRange) {
                     if (defaultDateRange.from) {
                         this.datesTemp[0] = this.calSvc.createCalendarDay(this._getDayTime(defaultDateRange.from), this._d);
@@ -89,7 +89,7 @@ var CalendarModal = /** @class */ (function () {
         switch (pickMode) {
             case pickModes.SINGLE:
                 return !!(this.datesTemp[0] && this.datesTemp[0].time);
-            case pickModes.RANGE:
+            case pickModes.RANGE || pickModes.FIXED_RANGE:
                 return !!(this.datesTemp[0] && this.datesTemp[1]) && !!(this.datesTemp[0].time && this.datesTemp[1].time);
             case pickModes.MULTI:
                 return this.datesTemp.length > 0 && this.datesTemp.every(function (e) { return !!e && !!e.time; });

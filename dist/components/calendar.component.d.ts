@@ -19,6 +19,7 @@ export declare class CalendarComponent implements ControlValueAccessor, OnInit {
     onChange: EventEmitter<any>;
     monthChange: EventEmitter<any>;
     options: CalendarComponentOptions;
+    fixedDayRange: { time: number, day: string, totalDays: number };
     _onChanged: Function;
     _onTouched: Function;
     constructor(calSvc: CalendarService);

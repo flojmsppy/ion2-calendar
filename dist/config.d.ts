@@ -8,4 +8,5 @@ export declare const pickModes: {
     SINGLE: string;
     RANGE: string;
     MULTI: string;
+    FIXED_RANGE: string;
 };
