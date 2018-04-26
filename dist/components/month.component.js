@@ -102,6 +102,9 @@ var MonthComponent = /** @class */ (function () {
         }
     };
     MonthComponent.prototype.onSelected = function (item, days) {
+        if (this.pickMode === pickModes.RANGE) {
+            this.pickMode = pickModes.FIXED_RANGE;
+        }
         if (this.readonly)
             return;
         item.selected = true;
